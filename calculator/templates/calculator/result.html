@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+        .btn-voltar {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745; /* Cor verde */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-voltar:hover {
+            background-color: #218838; /* Tonalidade mais escura de verde ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Resultado:</h1>
+    </header>
+    <div class="container">
+        <p><strong>Economia Anual:</strong> R$ {{ result.0 }}</p>
+        <p><strong>Economia Mensal:</strong> R$ {{ result.1 }}</p>
+        <p><strong>Desconto Aplicado:</strong> {{ result.2 }}%</p>
+        <p><strong>Cobertura:</strong> {{ result.3 }}</p>
+
+        <a href="{% url 'index' %}" class="btn-voltar">Voltar para o Inicio</a>
+
+    </div>
+</body>
+</html>
