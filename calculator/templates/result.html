@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/result_style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Resultado:</h1>
+    </header>
+    <div class="container">
+        <p><strong>Economia Anual:</strong> R$ {{ result.0 }}</p>
+        <p><strong>Economia Mensal:</strong> R$ {{ result.1 }}</p>
+        <p><strong>Desconto Aplicado:</strong> {{ result.2 }}%</p>
+        <p><strong>Cobertura:</strong> {{ result.3 }}</p>
+
+        <a href="{% url 'index' %}" class="btn-voltar">Voltar para o Inicio</a>
+
+    </div>
+</body>
+</html>

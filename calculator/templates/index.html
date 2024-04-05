@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Página Inicial</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index_style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo à minha aplicação!</h1>
+    </header>
+    <div class="container">
+        <ul>
+            <li>
+                <a class="icon-link" href="{% url 'calculator' %}">
+                    <img src="{% static 'img/calculadora.png' %}" alt="Ícone da Calculadora">
+                    <span>Calculadora</span>
+                </a>
+            </li>
+            <li>
+                <a class="icon-link" href="{% url 'importar_xlsx' %}">
+                    <img src="{% static 'img/importar.png' %}" alt="Ícone de Importação de Dados">
+                    <span>Importar Dados</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

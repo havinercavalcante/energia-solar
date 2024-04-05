@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form_style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo à calculadora!</h1>
+    </header>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_consumption_month1">Consumo do Mês 1:</label>
+                {{ form.consumption_month1 }}
+            </div>
+            <div class="form-group">
+                <label for="id_consumption_month2">Consumo do Mês 2:</label>
+                {{ form.consumption_month2 }}
+            </div>
+            <div class="form-group">
+                <label for="id_consumption_month3">Consumo do Mês 3:</label>
+                {{ form.consumption_month3 }}
+            </div>
+            <div class="form-group">
+                <label for="id_distributor_tax">Distributor Tax:</label>
+                {{ form.distributor_tax }}
+            </div>
+            <div class="form-group">
+                <label for="id_tax_type">Tax Type:</label>
+                {{ form.tax_type }}
+            </div>
+            <button type="submit">Calcular</button>
+        </form>
+        <a href="{% url 'index' %}" class="btn-voltar">Voltar para o Inicio</a>
+    </div>
+</body>
+</html>

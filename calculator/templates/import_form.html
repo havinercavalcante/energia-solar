@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar Arquivo Excel</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/import_form_style.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <h2>Importar Arquivo Excel</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file" class="custom-file-upload">
+                Selecione um arquivo Excel
+                <input type="file" name="file" id="file">
+            </label>
+            <br><br>
+            <input type="submit" value="Importar" class="custom-file-upload">
+            <a href="{% url 'index' %}" class="btn-voltar">Voltar para o Inicio</a>
+
+        </form>
+    </div>
+</body>
+</html>
