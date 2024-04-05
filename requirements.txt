@@ -1,7 +1,2 @@
-<<<<<<< HEAD
 Django==4.0.3
 pandas==1.3.4
-=======
-Django==4.0.3
-pandas==1.3.4
->>>>>>> ec2fe25 (Add files via upload)
