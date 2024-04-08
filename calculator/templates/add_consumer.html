@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Consumidor</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/add_consumer_style.css' %}">
+    <script>
+        function fetchAddress() {
+            var cep = document.getElementById('zip_code').value;
+            if (cep.length == 8) {
+                var url = 'https://viacep.com.br/ws/' + cep + '/json/';
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('city').value = data.localidade;
+                            document.getElementById('state').value = data.uf;
+                        } else {
+                            alert('CEP não encontrado.');
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar endereço:', error));
+            } else {
+                alert('CEP inválido.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Adicionar Consumidor</h1>
+    <form method="post" action="{% url 'add_consumer' %}">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="error-message">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <p class="error">{{ field|capfirst }}: {{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <label for="name">Nome do Consumidor:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="document">Documento(CPF/CNPJ):</label>
+        <input type="text" id="document" name="document" required>
+        
+        <label for="zip_code">CEP:</label>
+        <input type="text" id="zip_code" name="zip_code" required onblur="fetchAddress()">
+        
+        <label for="city">Cidade:</label>
+        <input type="text" id="city" name="city" required>
+        
+        <label for="state">Estado:</label>
+        <input type="text" id="state" name="state" required>
+        
+        <label for="consumption">Consumo (kWh):</label>
+        <input type="number" id="consumption" name="consumption" required>
+        
+        <label for="distributor_tax">Tarifa da Distribuidora:</label>
+        <input type="number" id="distributor_tax" name="distributor_tax" required>
+        
+        <label for="discount_rule">Tipo:</label>
+        <select id="discount_rule" name="discount_rule" class="custom-select" required>
+            {% for choice in discount_rule_choices %}
+                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="coverage">Cobertura(%):</label>
+        <input type="number" id="coverage" name="coverage" required>
+        
+        <button type="submit">Adicionar Consumidor</button>
+        
+    </form>
+    
+    <a href="{% url 'consumer_list' %}" class="btn">Voltar para a Lista de Consumidores</a>
+    <a href="{% url 'index' %}" class="btn">Voltar para o Início</a>
+
+</body>
+</html>

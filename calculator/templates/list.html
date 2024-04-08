@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/list_style.css' %}">
+    <title>Lista de Consumidores</title>
+</head>
+<body>
+    <h1>Lista de Consumidores</h1>
+
+    <form method="get" action="{% url 'consumer_list' %}">
+        <label for="consumer_type">Filtrar por Tipo:</label>
+        <select id="consumer_type" name="consumer_type">
+            <option value="">Todos</option>
+            <option value="Residencial">Residencial</option>
+            <option value="Comercial">Comercial</option>
+            <option value="Industrial">Industrial</option>
+        </select>
+    
+        <label for="consumption_min">Consumo Mínimo:</label>
+        <input type="number" id="consumption_min" name="consumption_min">
+    
+        <label for="consumption_max">Consumo Máximo:</label>
+        <input type="number" id="consumption_max" name="consumption_max">
+    
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Documento</th>
+                <th>CEP</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Consumo (kWh)</th>
+                <th>Tarifa da Distribuidora</th>
+                <th>Regra de Desconto</th>
+                <th>Economia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consumer_data in consumers_data %}
+            <tr>
+                <td>{{ consumer_data.consumer.name }}</td>
+                <td>{{ consumer_data.consumer.document }}</td>
+                <td>{{ consumer_data.consumer.zip_code }}</td>
+                <td>{{ consumer_data.consumer.city }}</td>
+                <td>{{ consumer_data.consumer.state }}</td>
+                <td>{{ consumer_data.consumer.consumption }}</td>
+                <td>{{ consumer_data.consumer.distributor_tax }}</td>
+                <td>{{ consumer_data.consumer.discount_rule }}</td>
+                <td>{{ consumer_data.monthly_savings|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'index' %}" class="btn-voltar">Voltar para o Início</a>
+    <a href="{% url 'add_consumer' %}" class="btn-adicionar">Adicionar Consumidor</a>
+
+</body>
+</html>

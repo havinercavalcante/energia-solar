@@ -1,10 +1,12 @@
 
 from django.shortcuts import render, redirect
-from .forms import ConsumptionForm 
+from .forms import ConsumptionForm, ConsumerForm
 from calculator_python import calculator
 import pandas as pd
-from .models import Consumer, DiscountRule 
-from django.urls import reverse
+from .models import Consumer, DiscountRule, ConsumerTypes
+from django.contrib import messages
+
+
 
 
 def index(request):
@@ -68,6 +70,57 @@ def importar_xlsx(request):
             return render(request, 'import_error.html', {'error_message': 'Nenhum arquivo enviado.'})
     else:
         return render(request, 'import_form.html')
+
+
+def consumer_list(request):
+    consumers = Consumer.objects.all().select_related('discount_rule')
+
+    consumer_type = request.GET.get('consumer_type')
+    consumption_min = request.GET.get('consumption_min')
+    consumption_max = request.GET.get('consumption_max')
+
+    if consumer_type:
+        consumers = consumers.filter(discount_rule__consumer_type=consumer_type)
+    if consumption_min:
+        consumers = consumers.filter(consumption__gte=consumption_min)
+    if consumption_max:
+        consumers = consumers.filter(consumption__lte=consumption_max)
+
+    data = []
+    for consumer in consumers:
+        if consumer.discount_rule:
+            monthly_savings = (
+                consumer.consumption * consumer.distributor_tax *
+                consumer.discount_rule.discount_value * consumer.discount_rule.cover_value
+            )
+            annual_savings = monthly_savings * 12
+        else:
+            monthly_savings = 0
+            annual_savings = 0
+
+        data.append({
+            "consumer": consumer,
+            "monthly_savings": round(monthly_savings, 2),
+            "annual_savings": round(annual_savings, 2)
+        })
+
+    return render(request, 'list.html', {'consumers_data': data})
+
+def add_consumer(request):
+    discount_rule_choices = [(choice[0], choice[1]) for choice in ConsumerTypes.choices]
+    if request.method == 'POST':
+        form = ConsumerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Consumidor adicionado com sucesso!')
+            return redirect('consumer_list')
+        else:
+            print(form.errors)
+            messages.error(request, 'O formulário contém erros. Por favor, corrija-os.')
+    else:
+        form = ConsumerForm()
+    return render(request, 'add_consumer.html', {'form': form, 'discount_rule_choices': discount_rule_choices})
+
 
 # TODO: Your list view should do the following tasks
 """
